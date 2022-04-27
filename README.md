@@ -1,4 +1,4 @@
-# jetpack-compose
+# Jetpack Compose
 
 <img width="480" src="https://developer.android.com/codelabs/jetpack-compose-basics/img/e3914108b7082ac0.gif">
 
