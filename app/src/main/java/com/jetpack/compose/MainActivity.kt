@@ -3,11 +3,16 @@ package com.jetpack.compose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
@@ -17,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,38 +51,28 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp() {
-    // TODO: This state should be hoisted
-    var shouldShowOnboarding by remember { mutableStateOf(true) }
+    // rememberSaveable ensures to store data in a save instance state mechanism
+    // when we rotate the device, the value is retained allowing to go to the same expected screen.
+    var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
 
     if (shouldShowOnboarding) {
         OnboardingScreen(onContinueClicked = {
             shouldShowOnboarding = !shouldShowOnboarding
         })
     } else {
-        Greetings(onContinueClicked = {
-            shouldShowOnboarding = !shouldShowOnboarding
-        })
+        Greetings()
     }
 }
 
 @Composable
 private fun Greetings(
-    names:
-    List<String> = listOf(stringResource(id = R.string.world), stringResource(id = R.string.compose)),
-    onContinueClicked: () -> Unit
+    names: List<String> = List(1000) { "$it" }
 ) {
-    Column(modifier = Modifier.padding(vertical = 4.dp)) {
-        Button(
-            modifier = Modifier
-                .padding(vertical = 24.dp)
-                .align(Alignment.CenterHorizontally),
-            onClick = onContinueClicked
-        ) {
-            Text(stringResource(id = R.string.flip))
-        }
-        for (name in names) {
+    
+    LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
+        items(items = names) { name ->
             Greeting(name = name)
-        }
+        }    
     }
 }
 
@@ -108,11 +104,17 @@ fun OnboardingScreen(onContinueClicked: () -> Unit) {
  */
 @Composable
 fun Greeting(name: String) {
-    // `remember` is used to guard against recomposition, so the state is not reset.
-    // The composable function will automatically be "subscribed" to the state. If the state changes, composables
-    // that read these fields will be recomposed to display the updates.
-    val expanded = remember { mutableStateOf(false) }
-    val extraPadding = if (expanded.value) 48.dp else 0.dp
+
+    // last time, it was using remember, but we switched now to rememberSaveable so we retain the row state even if we move away and come back.
+    var expanded by rememberSaveable { mutableStateOf(false) }
+
+    val extraPadding by animateDpAsState(
+        if (expanded) 48.dp else 0.dp,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        )
+    )
 
     Surface(
         color = MaterialTheme.colors.primary,
@@ -122,17 +124,17 @@ fun Greeting(name: String) {
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(bottom = extraPadding)
+                    .padding(bottom = extraPadding.coerceAtLeast(0.dp))
             ) {
                 Text(text = stringResource(id = R.string.hello))
                 Text(text = name)
             }
             OutlinedButton(
                 onClick = {
-                    expanded.value = !expanded.value
+                    expanded = !expanded
                 }
             ) {
-                val text = if (expanded.value) {
+                val text = if (expanded) {
                     stringResource(id = R.string.show_less)
                 } else {
                     stringResource(id = R.string.show_more)

@@ -1,5 +1,12 @@
-# Jetpack Compose - State hoisting
+# Jetpack Compose - smart list views
 
-In Composable functions, state that is read or modified by multiple functions should live in a common ancestor—this process is called state hoisting. To hoist means to lift or elevate.
+- We learn how easy is to make list views in contrast with recycler views
+- Here we learned about retaining the current screen specially if we rotate the device.
 
-![hoistin](https://user-images.githubusercontent.com/3371622/165652978-887584aa-a25c-4cbb-b7c1-98d3e5267678.gif)
+![Apr-28-2022 17-15-38](https://user-images.githubusercontent.com/3371622/165859718-dcba5d4e-836d-4b30-81a7-4397331dc385.gif)
+
+
+- We also learned about retaining the state of any row. This can be reflected in the animation below which expands the top rows, scrolls down and coming back shows them in their last state.
+- As a former Flash developer, there is a throwback with tweening animation found in replacing padding value with a composable animation.
+
+![Apr-28-2022 17-41-15](https://user-images.githubusercontent.com/3371622/165859865-30905e19-ebda-4f15-ac10-298fa948fd75.gif)
