@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Jetpack Compose</string>
+    <string name="welcome">"Welcome to the Basics Codelab!"</string>
+    <string name="world">World</string>
+    <string name="compose">Compose</string>
+    <string name="flip">Flip!</string>
+    <string name="hello">Hello, </string>
+    <string name="show_less">show less</string>
+    <string name="show_more">show more</string>
 </resources>

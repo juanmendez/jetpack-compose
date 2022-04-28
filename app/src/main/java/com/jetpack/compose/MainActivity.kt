@@ -3,17 +3,24 @@ package com.jetpack.compose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -37,14 +44,61 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyApp(names: List<String> = listOf("World", "Compose")) {
+fun MyApp() {
+    // TODO: This state should be hoisted
+    var shouldShowOnboarding by remember { mutableStateOf(true) }
+
+    if (shouldShowOnboarding) {
+        OnboardingScreen(onContinueClicked = {
+            shouldShowOnboarding = !shouldShowOnboarding
+        })
+    } else {
+        Greetings(onContinueClicked = {
+            shouldShowOnboarding = !shouldShowOnboarding
+        })
+    }
+}
+
+@Composable
+private fun Greetings(
+    names:
+    List<String> = listOf(stringResource(id = R.string.world), stringResource(id = R.string.compose)),
+    onContinueClicked: () -> Unit
+) {
     Column(modifier = Modifier.padding(vertical = 4.dp)) {
+        Button(
+            modifier = Modifier
+                .padding(vertical = 24.dp)
+                .align(Alignment.CenterHorizontally),
+            onClick = onContinueClicked
+        ) {
+            Text(stringResource(id = R.string.flip))
+        }
         for (name in names) {
             Greeting(name = name)
         }
     }
 }
 
+@Composable
+fun OnboardingScreen(onContinueClicked: () -> Unit) {
+
+    Surface {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(stringResource(id = R.string.welcome))
+            Button(
+                modifier = Modifier.padding(vertical = 24.dp),
+                onClick = onContinueClicked
+            ) {
+                Text(stringResource(id = R.string.flip))
+            }
+        }
+    }
+}
 
 /**
  * A Compose app is made up of composable functions - just regular functions marked with @Composable, which can call other composable functions.
@@ -70,7 +124,7 @@ fun Greeting(name: String) {
                     .weight(1f)
                     .padding(bottom = extraPadding)
             ) {
-                Text(text = "Hello, ")
+                Text(text = stringResource(id = R.string.hello))
                 Text(text = name)
             }
             OutlinedButton(
@@ -79,9 +133,9 @@ fun Greeting(name: String) {
                 }
             ) {
                 val text = if (expanded.value) {
-                    "show less"
+                    stringResource(id = R.string.show_less)
                 } else {
-                    "show more"
+                    stringResource(id = R.string.show_more)
                 }
 
                 Text(text)
