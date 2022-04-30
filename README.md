@@ -1,10 +1,24 @@
 # Jetpack Compose
 
-Each learning chapter is stored in its own branch.
+- We learned how a custom composable should follow the same pattern as the standard ones starting with a modifier.
+- Chaining modifiers matter how they are ordered
 
- - `codelabs-basics/*` has all chapters which are part of [Jetpack Compose basics in Codelabs](https://developer.android.com/codelabs/jetpack-compose-basics).
+The order of chained modifiers in a factory pattern matter.
 
+```
+Row(
+  modifier
+  .padding(16.dp)
+  .clickable(onClick = clickable) 
+) {...}
+```
+![clickable_after_padding](https://user-images.githubusercontent.com/3371622/166115451-4c681c75-6a80-4340-a4ac-b49c203a51e8.gif)
 
-Good to read
-
-- [Thinking in Compose](https://developer.android.com/jetpack/compose/mental-model)
+```
+Row(
+    modifier
+        .clickable(onClick = clickable)
+        .padding(16.dp)
+) {...}
+```
+![clickable_before_padding](https://user-images.githubusercontent.com/3371622/166115536-e5322f2a-2368-4979-8193-c78f263849fe.gif)
