@@ -1,8 +1,6 @@
-# Jetpack Compose - smart list views
+# Jetpack Compose - final touches
 
-- We learned how to set a theme to an application.
-- We learned how to dedicate colors for daylight, and allow for theme to switch in between day and night colors.
+- In this chapter we move most composables into their own files
+- We bring in font icons, and switch from text to expand and collapse arrows inside each cell.
 
-![From night to dalylight mode](https://user-images.githubusercontent.com/3371622/166083325-116dd1ec-2956-4092-9b0b-88de09b35651.gif)
-
-![checkout how to switch from daylight to night mode](https://developer.android.com/codelabs/jetpack-compose-basics/img/8a54a386b258277a.png)
+![basic colabs final touches](https://user-images.githubusercontent.com/3371622/166084743-fd6ca6f0-57f8-4ca5-81d8-72e1d66d75cb.gif)
