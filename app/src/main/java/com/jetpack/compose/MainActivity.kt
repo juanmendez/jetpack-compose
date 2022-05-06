@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -26,7 +28,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             LayoutsCodelabTheme {
                 LayoutsCodelab(clickable = {
-                    Toast.makeText(baseContext, "Pour some sugar on me!!!!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(baseContext, "And the memory remains...", Toast.LENGTH_LONG).show()
                 })
             }
         }
@@ -39,7 +41,7 @@ fun LayoutsCodelab(clickable: () -> Unit = {}) {
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = "Def Leppard")
+                    Text(text = "Scrolling Memories")
                 },
                 actions = {
                     IconButton(onClick = clickable) {
@@ -48,17 +50,27 @@ fun LayoutsCodelab(clickable: () -> Unit = {}) {
                 }
             )
         }
-    ) { innerPadding ->
-        BodyContent(innerPadding)
+    ) {
+        BodyContent()
     }
 
 }
 
 @Composable
-fun BodyContent(innerPadding: PaddingValues) {
-    Column(modifier = Modifier.padding(innerPadding)) {
-        Text(text = "Hysteria", modifier = Modifier.padding(vertical = 18.dp))
-        Text(text = "Hysteria is the fourth studio album by English rock band Def Leppard, released on 3 August 1987 through Mercury Records. It is Def Leppard's best-selling album to date, selling over 20 million copies worldwide, including 12 million in the US, and spawning seven hit singles. The album charted at number one on both the Billboard 200 and the UK Albums Chart.")
+fun BodyContent() {
+    ScrollableList(PaddingValues(30.dp))
+}
+
+@Composable
+fun ScrollableList(innerPadding: PaddingValues) {
+    // We save the scrolling position with this state that can also
+    // be used to programmatically scroll the list
+    val scrollState = rememberScrollState()
+
+    Column(Modifier.verticalScroll(scrollState)) {
+        repeat(40) {
+            Text("Item #$it", Modifier.padding(innerPadding))
+        }
     }
 }
 
