@@ -6,8 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,10 +16,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -30,16 +31,12 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jetpack.compose.ui.theme.ComposeTheme
-
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,12 +52,26 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+private data class DrawableStringPair(
+    @DrawableRes val drawable: Int,
+    @StringRes val text: Int
+)
+
+private val alignYourBodyData = listOf(
+    R.drawable.ab1_inversions to R.string.ab1_inversions,
+    R.drawable.ab2_quick_yoga to R.string.ab2_quick_yoga,
+    R.drawable.ab3_stretching to R.string.ab3_stretching,
+    R.drawable.ab4_tabata to R.string.ab4_tabata,
+    R.drawable.ab5_hiit to R.string.ab5_hiit,
+    R.drawable.ab6_pre_natal_yoga to R.string.ab6_pre_natal_yoga
+).map { DrawableStringPair(it.first, it.second) }
+
 @Composable
 fun ColDisplay() {
     Column(modifier = Modifier.fillMaxSize()) {
         SearchBar()
         Spacer(modifier = Modifier.height(15.dp))
-        AlignYourBodyElement()
+        AlignYourBodyRow()
     }
 }
 
@@ -88,7 +99,7 @@ fun SearchBar(modifier: Modifier = Modifier) {
 
 @Composable
 fun AlignYourBodyElement(
-    @DrawableRes drawable: Int =R.drawable.fc2_nature_meditations,
+    @DrawableRes drawable: Int = R.drawable.fc2_nature_meditations,
     @StringRes text: Int = R.string.fc2_nature_meditations,
     modifier: Modifier = Modifier
 ) {
@@ -98,8 +109,10 @@ fun AlignYourBodyElement(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.width(192.dp).padding(all = 8.dp),
-        ){
+            modifier = Modifier
+                .width(192.dp)
+                .padding(all = 8.dp),
+        ) {
             Image(
                 painter = painterResource(drawable),
                 contentDescription = null,
@@ -111,6 +124,22 @@ fun AlignYourBodyElement(
                 text = stringResource(id = text),
                 modifier = Modifier.padding(start = 10.dp)
             )
+        }
+    }
+}
+
+@Composable
+fun AlignYourBodyRow(
+    modifier: Modifier = Modifier
+) {
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        modifier = modifier
+    ) {
+
+        items(alignYourBodyData) { item ->
+            AlignYourBodyElement(item.drawable, item.text)
         }
     }
 }
