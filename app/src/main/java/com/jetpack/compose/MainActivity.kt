@@ -6,14 +6,18 @@ import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -28,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role.Companion.Image
@@ -83,29 +88,30 @@ fun SearchBar(modifier: Modifier = Modifier) {
 
 @Composable
 fun AlignYourBodyElement(
-    @DrawableRes drawable: Int = R.drawable.ab1_inversions,
-    @StringRes text: Int = R.string.ab1_inversions,
+    @DrawableRes drawable: Int =R.drawable.fc2_nature_meditations,
+    @StringRes text: Int = R.string.fc2_nature_meditations,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
+    Surface(
+        shape = MaterialTheme.shapes.small,
+        modifier = modifier,
     ) {
-        Image(
-            painter = painterResource(R.drawable.ab1_inversions),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(88.dp)
-                .clip(CircleShape)
-        )
-        Text(
-            text = stringResource(R.string.ab1_inversions),
-            style = MaterialTheme.typography.h3,
-            modifier = Modifier.paddingFromBaseline(
-                top = 24.dp, bottom = 8.dp
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.width(192.dp).padding(all = 8.dp),
+        ){
+            Image(
+                painter = painterResource(drawable),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.size(56.dp)
             )
-        )
+
+            Text(
+                text = stringResource(id = text),
+                modifier = Modifier.padding(start = 10.dp)
+            )
+        }
     }
 }
 
