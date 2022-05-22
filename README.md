@@ -1,14 +1,7 @@
 # Jetpack Compose
 
-Each learning chapter is stored in its own branch.
+In this chapter we learn how modifiers are of best practice to be available as arguments in our composables.
+In this way the caller can tailor the modifier, and as seeen previously we can always augment features as `Modifier` applies the builder pattern.
 
- - `codelabs-basics/*` has all chapters which are part of [Jetpack Compose basics in Codelabs](https://developer.android.com/codelabs/jetpack-compose-basics).
- - `codelabs-layouts/*` has all chapters which are part of [Layouts in Jetpack Compose](https://developer.android.com/codelabs/jetpack-compose-layouts)
-
-Good to read
-
-- [Thinking in Compose](https://developer.android.com/jetpack/compose/mental-model)
-
-There was a time in 2021 I worked solely in [Flutter](https://flutter.dev/). Their reactive pattern is very similar to what's being used in [Jetpack Compose](https://developer.android.com/jetpack/compose). Where in Flutter there are stateless and stateful widgets, here composables dictate themselves to be stateful or not. But overall it is the same flowable pattern propagating changes in ui elements where there is necessity and skipping others which don't need it.
-
-One thing is for sure this reactive pattern is used also in [React Native](https://reactnative.dev/), and other frameworks such as [Swift UI](https://developer.apple.com/xcode/swiftui/).
+> You should always think about providing parameters to customize the composable you're writing. 
+> You should also add a modifier property so the composable's look and feel can be adapted from the outside.
