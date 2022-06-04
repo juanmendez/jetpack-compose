@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyRow
@@ -41,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jetpack.compose.ui.theme.ComposeTheme
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +51,7 @@ class MainActivity : ComponentActivity() {
             ComposeTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-                    ColDisplay()
+                    ColumnDisplay()
                 }
             }
         }
@@ -80,14 +82,39 @@ private val favoriteCollectionsData = listOf(
 ).map { DrawableStringPair(it.first, it.second) }
 
 @Composable
-fun ColDisplay() {
+fun ColumnDisplay() {
     Column(modifier = Modifier.fillMaxSize()) {
-        SearchBar()
+        Spacer(Modifier.height(16.dp))
+        SearchBar(Modifier.padding(horizontal = 16.dp))
+        HomeSection(R.string.align_your_body) {
+            AlignYourBodyRow()
+        }
         Spacer(modifier = Modifier.height(15.dp))
-        AlignYourBodyRow()
-        FavoriteCollectionsGrid()
+        HomeSection(R.string.favorite_collections) {
+            FavoriteCollectionsGrid()
+        }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
+
+@Composable
+fun HomeSection(
+    @StringRes title: Int,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Column(modifier) {
+        Text(
+            text = stringResource(title).uppercase(Locale.getDefault()),
+            style = MaterialTheme.typography.subtitle1,
+            modifier = Modifier
+                .paddingFromBaseline(top = 40.dp, bottom = 8.dp)
+                .padding(horizontal = 16.dp)
+        )
+        content()
+    }
+}
+
 
 /**
  * Allowing caller to set a modifier, is a great practice. This is done throughout the courses.
@@ -179,10 +206,12 @@ fun FavoriteCollectionsGrid(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
 @Composable
-fun DefaultPreview() {
+fun HomeSectionPreview() {
     ComposeTheme {
-        ColDisplay()
+        HomeSection(R.string.align_your_body) {
+            AlignYourBodyRow()
+        }
     }
 }
