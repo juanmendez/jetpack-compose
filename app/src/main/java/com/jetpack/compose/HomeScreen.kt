@@ -1,8 +1,14 @@
-# Jetpack Compose - Scaffold
+package com.jetpack.compose
 
-This is another retro to Flutter, Scafold is a widget which lays out children with Material theme in mind. Here we see how our new navigation is applied at the bottom
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
-```
 @Composable
 fun HomeScreen() {
     Scaffold(
@@ -20,7 +26,3 @@ fun HomeScreen() {
         }
     }
 }
-```
-
-
-<img width="551" alt="image" src="https://user-images.githubusercontent.com/3371622/172025276-7eb5c07f-9542-4329-8b18-959ee0080caa.png">

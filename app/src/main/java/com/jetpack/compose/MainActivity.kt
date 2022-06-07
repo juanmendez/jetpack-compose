@@ -3,67 +3,11 @@ package com.jetpack.compose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.jetpack.compose.ui.theme.ComposeTheme
-import java.util.Locale
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            ComposeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-                    ColumnDisplay()
-                }
-            }
-        }
-    }
-}
-
-private data class DrawableStringPair(
-    @DrawableRes val drawable: Int,
-    @StringRes val text: Int
-)
-
-private val alignYourBodyData = listOf(
+val alignYourBodyData = listOf(
     R.drawable.ab1_inversions to R.string.ab1_inversions,
     R.drawable.ab2_quick_yoga to R.string.ab2_quick_yoga,
     R.drawable.ab3_stretching to R.string.ab3_stretching,
@@ -72,7 +16,7 @@ private val alignYourBodyData = listOf(
     R.drawable.ab6_pre_natal_yoga to R.string.ab6_pre_natal_yoga
 ).map { DrawableStringPair(it.first, it.second) }
 
-private val favoriteCollectionsData = listOf(
+val favoriteCollectionsData = listOf(
     R.drawable.fc1_short_mantras to R.string.fc1_short_mantras,
     R.drawable.fc2_nature_meditations to R.string.fc2_nature_meditations,
     R.drawable.fc3_stress_and_anxiety to R.string.fc3_stress_and_anxiety,
@@ -81,137 +25,21 @@ private val favoriteCollectionsData = listOf(
     R.drawable.fc6_nightly_wind_down to R.string.fc6_nightly_wind_down
 ).map { DrawableStringPair(it.first, it.second) }
 
-@Composable
-fun ColumnDisplay() {
-    Column(modifier = Modifier.fillMaxSize()) {
-        Spacer(Modifier.height(16.dp))
-        SearchBar(Modifier.padding(horizontal = 16.dp))
-        HomeSection(R.string.align_your_body) {
-            AlignYourBodyRow()
-        }
-        Spacer(modifier = Modifier.height(15.dp))
-        HomeSection(R.string.favorite_collections) {
-            FavoriteCollectionsGrid()
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-    }
-}
-
-@Composable
-fun HomeSection(
-    @StringRes title: Int,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
-) {
-    Column(modifier) {
-        Text(
-            text = stringResource(title).uppercase(Locale.getDefault()),
-            style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier
-                .paddingFromBaseline(top = 40.dp, bottom = 8.dp)
-                .padding(horizontal = 16.dp)
-        )
-        content()
-    }
-}
-
-
-/**
- * Allowing caller to set a modifier, is a great practice. This is done throughout the courses.
- */
-@Composable
-fun SearchBar(modifier: Modifier = Modifier) {
-    TextField(
-        value = "", onValueChange = {},
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = 56.dp),
-        colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = MaterialTheme.colors.surface
-        ),
-        leadingIcon = {
-            Icon(imageVector = Icons.Default.Search, contentDescription = null)
-        },
-        placeholder = {
-            Text(text = "Search")
-        }
-    )
-}
-
-@Composable
-fun AlignYourBodyElement(
-    @DrawableRes drawable: Int = R.drawable.fc2_nature_meditations,
-    @StringRes text: Int = R.string.fc2_nature_meditations,
-    modifier: Modifier = Modifier
-) {
-    Surface(
-        shape = MaterialTheme.shapes.small,
-        modifier = modifier,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(all = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Image(
-                painter = painterResource(drawable),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(88.dp)
-                    .clip(CircleShape),
-            )
-
-            Text(
-                text = stringResource(id = text),
-                modifier = Modifier.padding(start = 10.dp),
-                textAlign = TextAlign.Center,
-            )
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            ComposeTheme {
+                HomeScreen()
+            }
         }
     }
 }
 
-@Composable
-fun AlignYourBodyRow(
-    modifier: Modifier = Modifier
-) {
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        modifier = modifier
-    ) {
-
-        items(alignYourBodyData) { item ->
-            AlignYourBodyElement(item.drawable, item.text)
-        }
-    }
-}
-
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun FavoriteCollectionsGrid(
-    modifier: Modifier = Modifier
-) {
-    LazyVerticalGrid(
-        cells = GridCells.Fixed(2),
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier
-    ) {
-        items(favoriteCollectionsData) { item ->
-            AlignYourBodyElement(item.drawable, item.text)
-        }
-    }
-}
-
-@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
+@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2, heightDp = 600)
 @Composable
 fun HomeSectionPreview() {
     ComposeTheme {
-        HomeSection(R.string.align_your_body) {
-            AlignYourBodyRow()
-        }
+        HomeScreen()
     }
 }
