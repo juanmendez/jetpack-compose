@@ -1,14 +1,14 @@
 # Jetpack Compose
 
-Each learning chapter is stored in its own branch.
+[![State in Jetpack Compose](https://img.youtube.com/vi/PMMY23F0CFg/0.jpg)](https://www.youtube.com/watch?v=PMMY23F0CFg)
 
- - `codelabs-basics/*` has all chapters which are part of [Jetpack Compose basics in Codelabs](https://developer.android.com/codelabs/jetpack-compose-basics).
- - `codelabs-layouts/*` has all chapters which are part of [Layouts in Jetpack Compose](https://developer.android.com/codelabs/jetpack-compose-layouts)
+- Keeping states for composables requires those states to be based on `State<T>`
+	- if you need integration for LiveData, RxJava, Coroutines there are extensions available in Android libraries. [Check for references](https://developer.android.com/jetpack/compose/libraries#streams).  
+- State flow in composables
+![composition](https://developer.android.com/codelabs/jetpack-compose-state/img/7d3509d136280b6c.png)
+- What a nice way to inspect the composable tree!
+	There is description when glasses are equal to zero
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/3371622/174690416-eebdb4fb-9ffe-4d98-b41c-58404abd090e.png">
 
-Good to read
-
-- [Thinking in Compose](https://developer.android.com/jetpack/compose/mental-model)
-
-There was a time in 2021 I worked solely in [Flutter](https://flutter.dev/). Their reactive pattern is very similar to what's being used in [Jetpack Compose](https://developer.android.com/jetpack/compose). Where in Flutter there are stateless and stateful widgets, here composables dictate themselves to be stateful or not. But overall it is the same flowable pattern propagating changes in ui elements where there is necessity and skipping others which don't need it.
-
-One thing is for sure this reactive pattern is used also in [React Native](https://reactnative.dev/), and other frameworks such as [Swift UI](https://developer.apple.com/xcode/swiftui/).
+	After pressing the button, then there is at least one glass, then we show the description
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/3371622/174690476-137cd30c-0c04-4279-81c6-ece3d2eebaf6.png">
