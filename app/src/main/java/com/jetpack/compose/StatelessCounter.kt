@@ -22,10 +22,12 @@ fun StatelessCounter(count: Int, onIncrement: () -> Unit, onClear: () -> Unit, m
             var showTask by rememberSaveable { mutableStateOf(true) }
             if (showTask) {
                 WellnessTaskItem(
+                    taskName = "Have you taken your 15 minute walk today?",
+                    checked = true,
+                    onCheckedChange = {},
                     onClose = {
                         showTask = false
                     },
-                    taskName = "Have you taken your 15 minute walk today?"
                 )
             }
             Text("You've had $count glasses.")
