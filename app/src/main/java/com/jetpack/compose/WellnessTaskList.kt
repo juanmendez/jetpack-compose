@@ -1,9 +1,9 @@
 package com.jetpack.compose
+
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.runtime.remember
 
 @Composable
 fun WellnessTasksList(
@@ -17,11 +17,6 @@ fun WellnessTasksList(
     ) {
         items(
             items = list,
-            /**
-             * Use key param to define unique keys representing the items in a mutable list,
-             * instead of using the default key (list position). This prevents unnecessary
-             * recompositions.
-             */
             key = { task -> task.id }
         ) { task ->
             WellnessTaskItem(
@@ -33,5 +28,6 @@ fun WellnessTasksList(
         }
     }
 }
+
 
 fun getWellnessTasks() = List(30) { i -> WellnessTask(i, "Task # $i") }

@@ -14,7 +14,7 @@ fun StatefulCounter(modifier: Modifier = Modifier) {
     StatelessCounter(
         count = count,
         onIncrement = { count++ },
-        onClear = { count = 0},
+        onClear = { count = 0 },
         modifier = modifier
     )
 }

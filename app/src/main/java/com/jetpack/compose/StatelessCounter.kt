@@ -37,7 +37,7 @@ fun StatelessCounter(count: Int, onIncrement: () -> Unit, onClear: () -> Unit, m
             Button(onClick = { onIncrement() }, enabled = count < 10) {
                 Text("Add one")
             }
-            if(count > 0) {
+            if (count > 0) {
                 Button(onClick = { onClear() }) {
                     Text("Clear")
                 }
