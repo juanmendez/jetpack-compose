@@ -1,6 +1,14 @@
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+// Reads the Google maps key that is used in the AndroidManifest
+Properties properties = new Properties()
+if (rootProject.file("local.properties").exists()) {
+    properties.load(rootProject.file("key.properties").newDataInputStream())
 }
 
 android {
@@ -17,6 +25,8 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        manifestPlaceholders = [ googleMapsKey : properties.getProperty("google.maps.key", "") ]
     }
 
     buildTypes {
@@ -34,28 +44,66 @@ android {
     }
     buildFeatures {
         compose true
+        viewBinding true
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
     }
     packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
+        // Multiple dependency bring these files in. Exclude them to enable
+        // our test APK to build (has no effect on our AARs)
+        excludes += "/META-INF/AL2.0"
+        excludes += "/META-INF/LGPL2.1"
+        excludes += 'META-INF/gradle/incremental.annotation.processors'
     }
 }
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
-    implementation 'androidx.activity:activity-compose:1.4.0'
-    testImplementation 'junit:junit:4.13.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
+    implementation "com.google.android.libraries.maps:maps:3.1.0-beta"
+    implementation "com.google.maps.android:maps-v3-ktx:2.2.0"
+    constraints {
+        // Volley is a transitive dependency of maps
+        implementation("com.android.volley:volley:1.2.0") {
+            because("Only volley 1.2.0 or newer are available on maven.google.com")
+        }
+    }
+
+    implementation "com.google.accompanist:accompanist-insets:0.23.1"
+    implementation "androidx.activity:activity-compose:1.5.0"
+    implementation "androidx.appcompat:appcompat:1.4.2"
+    implementation "androidx.compose.runtime:runtime:1.1.1"
+    implementation "androidx.compose.foundation:foundation:1.1.1"
+    implementation "androidx.compose.material:material:1.1.1"
+    implementation "androidx.compose.foundation:foundation-layout:1.1.1"
+    implementation "androidx.compose.animation:animation:1.1.1"
+    implementation "androidx.compose.ui:ui-tooling-preview:1.1.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha01"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-alpha01"
+    implementation "com.google.dagger:hilt-android:2.42"
+    debugImplementation "androidx.compose.ui:ui-tooling:1.1.1"
+    kapt "com.google.dagger:hilt-android-testing:2.42"
+    kapt "com.google.dagger:hilt-compiler:2.42"
+
+    implementation "io.coil-kt:coil-compose:1.3.2"
+
+    debugImplementation "androidx.compose.ui:ui-test-manifest:1.1.1"
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+
+    androidTestImplementation "junit:junit:4.13.2"
+    androidTestImplementation "androidx.test:core:1.4.0"
+    androidTestImplementation "androidx.test:runner:1.4.0"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
+    androidTestImplementation "androidx.test:rules:1.4.0"
+    androidTestImplementation "androidx.test.ext:junit-ktx:1.1.3"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.1.1"
+    androidTestImplementation "com.google.dagger:hilt-android:2.42"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:2.42"
+    kaptAndroidTest "com.google.dagger:hilt-compiler:2.42"
 }
