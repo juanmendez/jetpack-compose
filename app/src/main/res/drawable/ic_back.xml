@@ -14,11 +14,13 @@
   ~   limitations under the License.
   ~
   -->
-<resources>
-    <string name="app_name">Crane</string>
-
-    <string name="cd_menu">Menu</string>
-    <string name="cd_back">Back</string>
-    <string name="cd_loading">Loading</string>
-    <string name="cd_drawer">Open drawer</string>
-</resources>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="24.0"
+        android:viewportHeight="24.0"
+        android:tint="?attr/colorControlNormal">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M20,11H7.83l5.59,-5.59L12,4l-8,8 8,8 1.41,-1.41L7.83,13H20v-2z"/>
+</vector>
