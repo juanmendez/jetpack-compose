@@ -43,7 +43,7 @@ class MainViewModel @Inject constructor(
 
     private val _suggestedDestinations = MutableStateFlow<List<ExploreModel>>(emptyList())
     val suggestedDestinations: StateFlow<List<ExploreModel>>
-        get() = _suggestedDestinations
+        get()= _suggestedDestinations
 
     init {
         _suggestedDestinations.value = destinationsRepository.destinations

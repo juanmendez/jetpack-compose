@@ -26,7 +26,7 @@ android {
             useSupportLibrary true
         }
 
-        manifestPlaceholders = [ googleMapsKey : properties.getProperty("google.maps.key", "") ]
+        manifestPlaceholders = [ googleMapsKey : properties.getProperty("googleMapsKey", "") ]
     }
 
     buildTypes {

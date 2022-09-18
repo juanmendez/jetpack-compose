@@ -33,16 +33,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import com.jetpack.compose.R
-import com.jetpack.compose.data.ExploreModel
-import com.jetpack.compose.home.OnExploreItemClicked
-import com.jetpack.compose.ui.BottomSheetShape
-import com.jetpack.compose.ui.crane_caption
-import com.jetpack.compose.ui.crane_divider_color
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,6 +52,14 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.google.accompanist.insets.navigationBarsHeight
+import com.google.accompanist.insets.navigationBarsPadding
+import com.jetpack.compose.R
+import com.jetpack.compose.data.ExploreModel
+import com.jetpack.compose.home.OnExploreItemClicked
+import com.jetpack.compose.ui.BottomSheetShape
+import com.jetpack.compose.ui.crane_caption
+import com.jetpack.compose.ui.crane_divider_color
+import kotlinx.coroutines.launch
 
 @Composable
 fun ExploreSection(
@@ -67,11 +74,57 @@ fun ExploreSection(
                 text = title,
                 style = MaterialTheme.typography.caption.copy(color = crane_caption)
             )
+
             Spacer(Modifier.height(8.dp))
-            // TODO Codelab: derivedStateOf step
-            // TODO: Show "Scroll to top" button when the first item of the list is not visible
-            val listState = rememberLazyListState()
-            ExploreList(exploreList, onItemClicked, listState = listState)
+
+            Box(Modifier.weight(1f)) {
+                val listState = rememberLazyListState()
+                ExploreList(exploreList, onItemClicked, listState = listState)
+
+                // Show the button if the first visible item is past
+                // the first item. We use a remembered derived state to
+                // minimize unnecessary compositions
+                val showUpButton by remember {
+                    derivedStateOf {
+                        listState.firstVisibleItemIndex > 0
+                    }
+                }
+
+                val showDownButton by remember {
+                    derivedStateOf {
+                        listState.firstVisibleItemIndex == 0
+                    }
+                }
+
+                if (showUpButton || showDownButton) {
+                    val coroutineScope = rememberCoroutineScope()
+
+                    FloatingActionButton(
+                        backgroundColor = MaterialTheme.colors.primary,
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .navigationBarsPadding()
+                            .padding(bottom = 8.dp),
+                        onClick = {
+                            coroutineScope.launch {
+                                if(showUpButton) {
+                                    listState.scrollToItem(0)
+                                } else {
+                                    listState.scrollToItem(exploreList.size - 1)
+                                }
+                            }
+                        }
+
+                    ) {
+                        if(showUpButton) {
+                            Text("Up!")
+                        } else {
+                            Text("Down!")
+                        }
+
+                    }
+                }
+            }
         }
     }
 }

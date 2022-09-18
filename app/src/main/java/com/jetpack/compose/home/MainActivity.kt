@@ -22,6 +22,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import com.jetpack.compose.details.launchDetailsActivity
 import com.jetpack.compose.ui.CraneTheme
 import com.jetpack.compose.util.ProvideImageLoader
@@ -54,6 +60,19 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun MainScreen(onExploreItemClicked: OnExploreItemClicked) {
     Surface(color = MaterialTheme.colors.primary) {
-        CraneHome(onExploreItemClicked = onExploreItemClicked)
+        /**
+         * remember api can preserve while recomposition takes place.
+         * rememberSaveable does the same except it holds preserves data upon configuration changes such as rotation.
+         */
+        var showLandingScreen by rememberSaveable { mutableStateOf(true) }
+
+        if (showLandingScreen) {
+            LandingScreen(callback = {
+                showLandingScreen = false
+            })
+        } else {
+            CraneHome(onExploreItemClicked = onExploreItemClicked)
+        }
     }
+
 }
