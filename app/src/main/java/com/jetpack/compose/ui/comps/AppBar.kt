@@ -35,7 +35,7 @@ fun AppBar() {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun AppBarPreview() {
     JetNewsTheme {
         AppBar()
     }
