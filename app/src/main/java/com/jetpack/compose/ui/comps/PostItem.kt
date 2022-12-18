@@ -3,12 +3,15 @@ package com.jetpack.compose.ui.comps
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ListItem
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,10 +24,12 @@ fun PostItem(post: Post, modifier: Modifier = Modifier) {
     ListItem(
         modifier = modifier
             .clickable { /* todo */ }
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .clip(shape = CutCornerShape(10.dp)),
         icon = {
             Image(
                 painter = painterResource(post.imageThumbId),
+                modifier = Modifier.clip(shape = MaterialTheme.shapes.small),
                 contentDescription = null
             )
         },

@@ -1,29 +1,70 @@
-# [Text Style](https://developer.android.com/codelabs/jetpack-compose-theming#5)
+# [Shapes](https://developer.android.com/codelabs/jetpack-compose-theming#6)
 
-Text styling as mentioned in the previous chapter is based on the Typography class.
-There you can stylize different text types based on Material design.
+In Android we define a theme, and stick to it. Whereas in Compose, we are based on a Singleton theme which is updated by a composable method. It is misleading at first since the composable method and the singleton object are named the same.
 
-Compose is based on imutability so rather than updating one text style for example, one can be copied and then modified.
+In `JetNewsTheme`
+
+The composable method which assigns attributes to the singleton which are merged into its original ones.
+```
+@Composable
+fun JetNewsTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    MaterialTheme(
+        colors = if (darkTheme) DarkColors else LightColors,
+        typography = JetNewsTypography,
+        shapes = JetNewsShapes,
+        content = content
+    )
+}
+```
+
+The singleton theme.
+```
+package androidx.compose.material
+
+/**
+ * Contains functions to access the current theme values provided at the call site's position in the hierarchy.
+ */
+object MaterialTheme {
+    /**
+     * Retrieves the current [Colors] at the call site's position in the hierarchy.
+     *
+     * @sample androidx.compose.material.samples.ThemeColorSample
+     */
+    val colors: Colors
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalColors.current
+
+    /**
+     * Retrieves the current [Typography] at the call site's position in the hierarchy.
+     *
+     * @sample androidx.compose.material.samples.ThemeTextStyleSample
+     */
+    val typography: Typography
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalTypography.current
+
+    /**
+     * Retrieves the current [Shapes] at the call site's position in the hierarchy.
+     */
+    val shapes: Shapes
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalShapes.current
+}
 
 ```
-val tagStyle = MaterialTheme.typography.overline.toSpanStyle().copy(
- background = MaterialTheme.colors.primary.copy(alpha = 0.1f)
+
+So after reading this it is easier to understand how we get a shape from the app's theme.
+
+```
+Image(
+    ...    
+	modifier = Modifier.clip(shape = MaterialTheme.shapes.small)
 )
 ```
 
-Where in Android we cannot have multiple styles for the text in a TextView unless there is some tweak around using HTML. In Compose we can break the text appart and then apply styles
-
-```
-val text = buildAnnotatedString {
-  append("This is some unstyled text\n")
-  withStyle(SpanStyle(color = Color.Red)) {
-    append("Red text\n")
-  }
-  withStyle(SpanStyle(fontSize = 24.sp)) {
-    append("Large text")
-  }
-}
-
-Text(text)
-
-```
