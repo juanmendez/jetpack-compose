@@ -1,4 +1,4 @@
-package com.jetpack.compose.ui
+package com.jetpack.compose.ui.comps
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon

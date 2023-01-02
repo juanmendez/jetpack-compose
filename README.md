@@ -68,3 +68,30 @@ Image(
 )
 ```
 
+In Android and in the Web we have our declaration stylied separately through xml or css files, here in Jetpack Compose we are centric in Kotlin. 
+
+Although in Android we can apply a default style and customize it such as one for a button, in Compose to achieve that we need to create our own signature of components and include a style..
+
+See example.
+
+```
+@Composable
+fun AcmeButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+
+  // expose Button params consumers should be able to change
+) {
+  val acmeButtonShape: Shape = ...
+  Button(
+    shape = acmeButtonShape,
+    onClick = onClick,
+    modifier = modifier
+    // other params
+  )
+}
+```
+
+For further reading
+[Design systems in Compose](https://developer.android.com/jetpack/compose/designsystems)
+[Material Design](https://m3.material.io/) 

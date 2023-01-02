@@ -1,4 +1,4 @@
-package com.jetpack.compose.ui
+package com.jetpack.compose.ui.comps
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
