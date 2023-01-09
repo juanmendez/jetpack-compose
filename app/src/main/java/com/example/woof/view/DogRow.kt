@@ -1,10 +1,9 @@
 package com.example.woof.view
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,14 +20,18 @@ import com.example.woof.ui.theme.WoofTheme
  */
 @Composable
 fun DogRow(dog: DogItem, modifier: Modifier = Modifier) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .background(MaterialTheme.colors.surface)
+    Card(
+        modifier = modifier.padding(8.dp),
+        elevation = 4.dp
     ) {
-        DogIcon(dog.imageResourceId)
-        DogInformation(dog.name, dog.age)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            DogIcon(dog.imageResourceId)
+            DogInformation(dog.name, dog.age)
+        }
     }
 }
 
@@ -36,6 +39,12 @@ fun DogRow(dog: DogItem, modifier: Modifier = Modifier) {
 @Composable
 fun DogRowPreview() {
     WoofTheme(darkTheme = false) {
-        DogRow(dog = DogItem(imageResourceId = R.drawable.bella, name = R.string.dog_name_1, 0, R.string.dog_description_1))
+        DogRow(
+            dog = DogItem(
+                imageResourceId = R.drawable.bella,
+                name = R.string.dog_name_1, 0,
+                R.string.dog_description_1
+            )
+        )
     }
 }

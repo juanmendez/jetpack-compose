@@ -3,7 +3,6 @@ package com.example.woof.view
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,12 +24,10 @@ fun DogInformation(@StringRes dogName: Int, dogAge: Int, modifier: Modifier = Mo
     Column {
         Text(
             text = stringResource(dogName),
-            color = MaterialTheme.colors.onSurface,
             modifier = modifier.padding(top = 8.dp)
         )
         Text(
-            text = stringResource(R.string.years_old, dogAge),
-            color = MaterialTheme.colors.onSurface
+            text = stringResource(R.string.years_old, dogAge)
         )
     }
 }
