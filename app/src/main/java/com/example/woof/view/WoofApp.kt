@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,9 +16,15 @@ import com.example.woof.ui.theme.WoofTheme
  */
 @Composable
 fun WoofApp() {
-    LazyColumn(modifier = Modifier.background(MaterialTheme.colors.background)) {
-        items(dogItems) {
-            DogRow(dog = it)
+    Scaffold(
+        topBar = {
+            WoofTopAppBar()
+        }
+    ) {
+        LazyColumn(modifier = Modifier.background(MaterialTheme.colors.background)) {
+            items(dogItems) {
+                DogRow(dog = it)
+            }
         }
     }
 }

@@ -10,7 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.woof.R
+import com.example.woof.ui.theme.WoofTheme
 
 /**
  * Composable that displays a photo of a dog.
@@ -33,4 +36,12 @@ fun DogIcon(@DrawableRes dogIcon: Int, modifier: Modifier = Modifier) {
          */
         contentDescription = null
     )
+}
+
+@Preview
+@Composable
+fun DogIconPreview() {
+    WoofTheme(darkTheme = false) {
+        DogIcon(dogIcon = R.drawable.bella)
+    }
 }

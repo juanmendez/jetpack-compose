@@ -27,7 +27,7 @@ I like to keep each composable in its own file. So that I can add a preview. It 
 
 <img width="800" alt="using Composable preview makes life easy" src="https://user-images.githubusercontent.com/114011052/211212942-ff2a8be7-62de-4293-a839-45f719b86918.png">
 
-One we wrap the DogRow Composable's content inside a card we begin adding inheritance
+One we wrap the DogRow Composable content inside a card we begin adding inheritance
 of Material design. So our row's text content doesn't have to be explicit of what color to have since it is going to go by `onSurface` color. The card is going to apply `surface` color by inheritance, so no need to imply background color anymore within its row. The card also inherits `Shape.medium` having rounded corner shape of `16.dp`.
 
 <img width="595" alt="image" src="https://user-images.githubusercontent.com/114011052/211213458-7e5ac459-afef-4f3c-b651-bfc01d91e546.png">
