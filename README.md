@@ -7,11 +7,15 @@ Each learning chapter is stored in its own branch.
 - `codelabs-states/*` has all chapters which are part of [State in Jetpack Compose](https://developer.android.com/codelabs/jetpack-compose-state)
 - `codelabs-states-advanced/*` has all chapters which are part of [Advanced State and Side Effects in Jetpack Compose](https://developer.android.com/codelabs/jetpack-compose-advanced-state-side-effects)
 - `codelabs-theming/*` has all chapters which are part of [Jetpack Compose theming](https://developer.android.com/codelabs/jetpack-compose-theming)
+- `codelabs-material-theming/*` has all chapters which are part of [Material Theming with Jetpack Compose](https://developer.android.com/codelabs/basic-android-kotlin-compose-material-theming)
+- `codelabs-migration/*` learn how to migrate to Compose incrementally from a layout designed application, [Migrating to Jetpack Compose](url) 
 
-Good to read
+Guidelines:
 
-- [Thinking in Compose](https://developer.android.com/jetpack/compose/mental-model)
+The recommended migration strategy is this:
 
-There was a time in 2021 I worked solely in [Flutter](https://flutter.dev/). Their reactive pattern is very similar to what's being used in [Jetpack Compose](https://developer.android.com/jetpack/compose). Where in Flutter there are stateless and stateful widgets, here composables dictate themselves to be stateful or not. But overall it is the same flowable pattern propagating changes in ui elements where there is necessity and skipping others which don't need it.
+- Build new features with Compose
+- As you're building features, identify reusable elements and start to create a library of common UI components
+- Replace existing features one screen at a time
 
-One thing is for sure this reactive pattern is used also in [React Native](https://reactnative.dev/), and other frameworks such as [Swift UI](https://developer.apple.com/xcode/swiftui/).
+
