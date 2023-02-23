@@ -31,7 +31,7 @@ tools:text="Apple" />
 ```
  */
 @Composable
-private fun PlantName(name: String) {
+fun PlantName(name: String) {
     Text(
         text = name,
         style = MaterialTheme.typography.h5,
