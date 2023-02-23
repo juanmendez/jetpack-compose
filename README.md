@@ -63,4 +63,43 @@ Here is the result
 
 <img width="350" alt="composable injected in xml layout" src="https://user-images.githubusercontent.com/3371622/220806865-098d99b9-44ae-40fa-b10d-500ef70672d7.png">
 
+### Creating composable from the xml layout.
+
+This used to be within the nested scroll view.
+
+```
+<TextView
+    android:id="@+id/plant_detail_name"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/margin_small"
+    android:layout_marginEnd="@dimen/margin_small"
+    android:gravity="center_horizontal"
+    android:text="@{viewModel.plant.name}"
+    android:textAppearance="?attr/textAppearanceHeadline5"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="Apple" />
+```
+
+This is going to be replaced by
+
+```
+@Composable
+private fun PlantName(name: String) {
+    Text(
+        text = name,
+        style = MaterialTheme.typography.h5,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = dimensionResource(R.dimen.margin_small))
+            .wrapContentWidth(Alignment.CenterHorizontally)
+    )
+}
+```
+
+Here we are maintaining the same `textAppereance`while making sure the textfield expands completely in its hosting composable.
+We make sure the text is centered, and we also make sure it has the specific padding.
+
 
