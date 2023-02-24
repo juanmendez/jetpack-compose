@@ -17,6 +17,7 @@ fun PlantDetailContent(plant: Plant) {
         Column(Modifier.padding(dimensionResource(R.dimen.margin_normal))) {
             PlantName(plant.name)
             PlantWatering(plant.wateringInterval)
+            PlantDescription(plant.description)
         }
     }
 }

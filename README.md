@@ -102,4 +102,35 @@ private fun PlantName(name: String) {
 Here we are maintaining the same `textAppereance`while making sure the textfield expands completely in its hosting composable.
 We make sure the text is centered, and we also make sure it has the specific padding.
 
+### Supporting features not available in Compose
+
+Originally we were able to assign html content to a TextView previously in `fragment_plant_detail.xml`. 
+
+```
+<TextView
+                    android:id="@+id/plant_description"
+                    style="?android:attr/textAppearanceMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_small"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:layout_marginEnd="@dimen/margin_small"
+                    android:minHeight="@dimen/plant_description_min_height"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/plant_watering"
+                    app:renderHtml="@{viewModel.plant.description}"
+                    tools:text="Details about the plant" />
+```
+
+We cannot support html content directly in Compose, but we will be able to inject a native ui element via `AndroidView`
+
+`
+AndroidView allows you to create a View programmatically. In case you want to inflate a View from an XML file, you can do it using view binding with the AndroidViewBinding API from the androidx.compose.ui:ui-viewbinding library.
+
+
+`
+
+
+
 
