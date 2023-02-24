@@ -8,6 +8,7 @@ Each learning chapter is stored in its own branch.
 - `codelabs-states-advanced/*` has all chapters which are part of [Advanced State and Side Effects in Jetpack Compose](https://developer.android.com/codelabs/jetpack-compose-advanced-state-side-effects)
 - `codelabs-theming/*` has all chapters which are part of [Jetpack Compose theming](https://developer.android.com/codelabs/jetpack-compose-theming)
 - `codelabs-material-theming/*` has all chapters which are part of [Material Theming with Jetpack Compose](https://developer.android.com/codelabs/basic-android-kotlin-compose-material-theming)
+- `codelabs-migration/*` learn how to migrate to Compose incrementally from a layout designed application, [Migrating to Jetpack Compose](https://developer.android.com/codelabs/jetpack-compose-migration) 
 
 Good to read
 
