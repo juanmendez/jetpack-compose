@@ -128,9 +128,13 @@ We cannot support html content directly in Compose, but we will be able to injec
 `
 AndroidView allows you to create a View programmatically. In case you want to inflate a View from an XML file, you can do it using view binding with the AndroidViewBinding API from the androidx.compose.ui:ui-viewbinding library.
 
-
 `
 
+### Ensuring your ComposeView is up to date with its Android lifecycle owner
 
+[Compose Strategy](https://developer.android.com/jetpack/compose/migrate/interoperability-apis/compose-in-views#composition-strategy)
 
+`
+By default, Compose disposes of the Composition whenever the view becomes detached from a window. Compose UI View types such as ComposeView and AbstractComposeView use a ViewCompositionStrategy that defines this behavior.
+`
 
