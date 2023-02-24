@@ -24,7 +24,7 @@ buildscript {
         ktxVersion = '1.9.0'
         lifecycleVersion = '2.5.1'
         materialVersion = '1.8.0'
-        materialComposeAdapterVersion = '1.2.1'
+        materialComposeAdapterVersion = '0.28.0'
         navigationVersion = '2.5.3'
         recyclerViewVersion = '1.2.1'
         roomVersion = '2.5.0'

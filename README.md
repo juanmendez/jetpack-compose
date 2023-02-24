@@ -138,3 +138,11 @@ AndroidView allows you to create a View programmatically. In case you want to in
 By default, Compose disposes of the Composition whenever the view becomes detached from a window. Compose UI View types such as ComposeView and AbstractComposeView use a ViewCompositionStrategy that defines this behavior.
 `
 
+
+### Backing up Native Material Theme in Compose.
+
+There is a way to bridge material theme declared in Android to be translated into the MaterialTheme in JetpackCompose. We can make use of the [Theme Adapter Material library](https://google.github.io/accompanist/themeadapter-material/
+)
+
+![composable](https://user-images.githubusercontent.com/3371622/221266369-c6a81e43-14dd-4eb0-a608-7403a5acbc6d.gif)
+
