@@ -52,7 +52,7 @@ import java.util.Locale
 fun RallyTabRow(
     allScreens: List<RallyDestination>,
     onTabSelected: (RallyDestination) -> Unit,
-    currentScreen: RallyDestination
+    currentRoute: String?
 ) {
     Surface(
         Modifier
@@ -65,7 +65,7 @@ fun RallyTabRow(
                     text = screen.route,
                     icon = screen.icon,
                     onSelected = { onTabSelected(screen) },
-                    selected = currentScreen == screen
+                    selected = currentRoute == screen.route
                 )
             }
         }
