@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 The Android Open Source Project
+ * Copyright 2022 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,8 @@
 
 package com.jetpack.compose.rally.ui.overview
 
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -38,7 +37,6 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Sort
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,32 +46,40 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jetpack.compose.rally.R
-import com.jetpack.compose.rally.RallyScreen
 import com.jetpack.compose.rally.data.UserData
 import com.jetpack.compose.rally.ui.components.AccountRow
 import com.jetpack.compose.rally.ui.components.BillRow
 import com.jetpack.compose.rally.ui.components.RallyAlertDialog
 import com.jetpack.compose.rally.ui.components.RallyDivider
 import com.jetpack.compose.rally.ui.components.formatAmount
-import com.jetpack.compose.rally.ui.theme.RallyTheme
 import java.util.Locale
 
 @Composable
-fun OverviewBody(onScreenChange: (RallyScreen) -> Unit = {}) {
+fun OverviewScreen(
+    onClickSeeAllAccounts: () -> Unit = {},
+    onClickSeeAllBills: () -> Unit = {},
+    onAccountClick: (String) -> Unit = {},
+) {
     Column(
         modifier = Modifier
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
+            .semantics { contentDescription = "Overview Screen" }
     ) {
         AlertCard()
         Spacer(Modifier.height(RallyDefaultPadding))
-        AccountsCard(onScreenChange)
+        AccountsCard(
+            onClickSeeAll = onClickSeeAllAccounts,
+            onAccountClick = onAccountClick
+        )
         Spacer(Modifier.height(RallyDefaultPadding))
-        BillsCard(onScreenChange)
+        BillsCard(
+            onClickSeeAll = onClickSeeAllBills
+        )
     }
 }
 
@@ -94,24 +100,7 @@ private fun AlertCard() {
             buttonText = "Dismiss".uppercase(Locale.getDefault())
         )
     }
-
-    var currentTargetElevation by remember { mutableStateOf(1.dp) }
-    LaunchedEffect(Unit) {
-        // Start the animation
-        currentTargetElevation = 8.dp
-    }
-    val animatedElevation = animateDpAsState(
-        targetValue = currentTargetElevation,
-        animationSpec = tween(durationMillis = 500),
-        finishedListener = {
-            currentTargetElevation = if (currentTargetElevation > 4.dp) {
-                1.dp
-            } else {
-                8.dp
-            }
-        }
-    )
-    Card(elevation = animatedElevation.value) {
+    Card {
         Column {
             AlertHeader {
                 showDialog = true
@@ -121,14 +110,6 @@ private fun AlertCard() {
             )
             AlertItem(alertMessage)
         }
-    }
-}
-
-@Preview
-@Composable
-fun AlertCardPreview() {
-    RallyTheme {
-        OverviewBody()
     }
 }
 
@@ -211,7 +192,12 @@ private fun <T> OverviewScreenCard(
             OverViewDivider(data, values, colors)
             Column(Modifier.padding(start = 16.dp, top = 4.dp, end = 8.dp)) {
                 data.take(SHOWN_ITEMS).forEach { row(it) }
-                SeeAllButton(onClick = onClickSeeAll)
+                SeeAllButton(
+                    modifier = Modifier.clearAndSetSemantics {
+                        contentDescription = "All $title"
+                    },
+                    onClick = onClickSeeAll,
+                )
             }
         }
     }
@@ -239,19 +225,18 @@ private fun <T> OverViewDivider(
  * The Accounts card within the Rally Overview screen.
  */
 @Composable
-private fun AccountsCard(onScreenChange: (RallyScreen) -> Unit) {
+private fun AccountsCard(onClickSeeAll: () -> Unit, onAccountClick: (String) -> Unit) {
     val amount = UserData.accounts.map { account -> account.balance }.sum()
     OverviewScreenCard(
         title = stringResource(R.string.accounts),
         amount = amount,
-        onClickSeeAll = {
-            onScreenChange(RallyScreen.Accounts)
-        },
+        onClickSeeAll = onClickSeeAll,
         data = UserData.accounts,
         colors = { it.color },
         values = { it.balance }
     ) { account ->
         AccountRow(
+            modifier = Modifier.clickable { onAccountClick(account.name) },
             name = account.name,
             number = account.number,
             amount = account.balance,
@@ -264,14 +249,12 @@ private fun AccountsCard(onScreenChange: (RallyScreen) -> Unit) {
  * The Bills card within the Rally Overview screen.
  */
 @Composable
-private fun BillsCard(onScreenChange: (RallyScreen) -> Unit) {
+private fun BillsCard(onClickSeeAll: () -> Unit) {
     val amount = UserData.bills.map { bill -> bill.amount }.sum()
     OverviewScreenCard(
         title = stringResource(R.string.bills),
         amount = amount,
-        onClickSeeAll = {
-            onScreenChange(RallyScreen.Bills)
-        },
+        onClickSeeAll = onClickSeeAll,
         data = UserData.bills,
         colors = { it.color },
         values = { it.amount }
@@ -286,10 +269,10 @@ private fun BillsCard(onScreenChange: (RallyScreen) -> Unit) {
 }
 
 @Composable
-private fun SeeAllButton(onClick: () -> Unit) {
+private fun SeeAllButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     TextButton(
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .height(44.dp)
             .fillMaxWidth()
     ) {
