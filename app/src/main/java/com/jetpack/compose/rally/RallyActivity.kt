@@ -30,7 +30,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.jetpack.compose.rally.ui.accounts.AccountsScreen
+import com.jetpack.compose.rally.ui.bills.BillsScreen
 import com.jetpack.compose.rally.ui.components.RallyTabRow
+import com.jetpack.compose.rally.ui.overview.OverviewScreen
 import com.jetpack.compose.rally.ui.theme.RallyTheme
 
 /**
@@ -63,20 +66,30 @@ fun RallyApp() {
                 )
             }
         ) { innerPadding ->
-            NavHost(navController = navController, startDestination = Overview.route, modifier = Modifier.padding(innerPadding)) {
+            NavHost(
+                navController = navController,
+                startDestination = Overview.route,
+                modifier = Modifier.padding(innerPadding)
+            ) {
                 // builder parameter will be defined here as the graph
 
                 composable(route = Overview.route) {
-                    Overview.screen()
+                    OverviewScreen(
+                        onClickSeeAllAccounts = {
+                            navController.navigateSingleTopTo(Accounts.route)
+                        },
+                        onClickSeeAllBills = {
+                            navController.navigateSingleTopTo(Bills.route)
+                        }
+                    )
                 }
 
                 composable(route = Accounts.route) {
-                    Accounts.screen()
+                    AccountsScreen()
                 }
                 composable(route = Bills.route) {
-                    Bills.screen()
+                    BillsScreen()
                 }
-
             }
         }
     }
