@@ -26,12 +26,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.jetpack.compose.rally.ui.accounts.AccountsScreen
 import com.jetpack.compose.rally.ui.accounts.SingleAccountScreen
 import com.jetpack.compose.rally.ui.bills.BillsScreen
@@ -94,7 +92,7 @@ fun RallyApp() {
 
                 composable(route = Accounts.route) {
                     AccountsScreen(
-                        onAccountClick = {accountType ->
+                        onAccountClick = { accountType ->
                             navController.navigateSingleTopTo(
                                 SingleAccount.getRouteWithArgument(accountType)
                             )
@@ -107,8 +105,9 @@ fun RallyApp() {
 
                 composable(
                     route = SingleAccount.routeWithArgs,
-                    arguments = SingleAccount.arguments
-                ) { navBackStackEntry ->
+                    arguments = SingleAccount.arguments,
+                    deepLinks = SingleAccount.deepLinks,
+                    ) { navBackStackEntry ->
                     // Retrieve the passed argument
                     val accountType = navBackStackEntry.arguments?.getString(SingleAccount.accountTypeArg)
 
