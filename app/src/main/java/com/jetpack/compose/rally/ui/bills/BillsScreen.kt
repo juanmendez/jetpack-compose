@@ -36,7 +36,7 @@ fun BillsScreen(
     bills: List<Bill> = remember { UserData.bills }
 ) {
     StatementBody(
-        modifier = Modifier.clearAndSetSemantics { contentDescription = "Bills" },
+        modifier = Modifier.clearAndSetSemantics { contentDescription = "Bills Screen" },
         items = bills,
         amounts = { bill -> bill.amount },
         colors = { bill -> bill.color },

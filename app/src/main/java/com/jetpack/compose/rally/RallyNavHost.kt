@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -14,7 +15,7 @@ import com.jetpack.compose.rally.ui.bills.BillsScreen
 import com.jetpack.compose.rally.ui.overview.OverviewScreen
 
 @Composable
-fun RallyNavHost(navController: NavHostController, innerPadding: PaddingValues) {
+fun RallyNavHost(navController: NavHostController, innerPadding: PaddingValues = PaddingValues(all = 0.dp)) {
     NavHost(
         navController = navController,
         startDestination = Overview.route,
