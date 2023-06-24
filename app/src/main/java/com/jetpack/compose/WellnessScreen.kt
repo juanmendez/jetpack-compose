@@ -49,8 +49,8 @@ fun WellnessScreen(viewModel: MainViewModel = viewModel(), modifier: Modifier = 
 
         Text("Current state $lifecycleState")
         Text("You've had ${viewModel.count.value} glasses.")
-        Button(onClick = { viewModel.incrementCount() }, Modifier.padding(top = 8.dp)) {
-            Text("Add one")
+        Button(onClick = { viewModel.incrementByFiveWithDelay() }, Modifier.padding(top = 8.dp)) {
+            Text("Add five glasses")
         }
     }
 
