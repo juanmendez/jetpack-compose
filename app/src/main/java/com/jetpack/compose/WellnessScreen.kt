@@ -16,24 +16,41 @@
 package com.jetpack.compose
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.codelabs.StatefulCounter
+import androidx.compose.ui.unit.dp
 
 @Composable
-fun WellnessScreen(wellnessViewModel: WellnessViewModel = viewModel(), modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
-        StatefulCounter()
+fun WellnessScreen(modifier: Modifier = Modifier) {
+    Column {
+        /**
+         * This is a long way
+         * val count: MutableState<Int> = remember { mutableStateOf(0) }
+         */
 
-        WellnessTasksList(
-            list = wellnessViewModel.tasks,
-            onCheckedTask = { task, checked ->
-                wellnessViewModel.onCheckedTask(task, checked)
-            },
-            onCloseTask = { task ->
-                wellnessViewModel.remove(task)
-            }
-        )
+        /**
+         * This way it saves the data but if the Activity has to reset due to settings it is then restarted
+         * var count by remember { mutableStateOf(0) }
+         */
+
+        /**
+         * Even if the activity is reset due to configurations such as rotation this
+         * composable is retained
+         */
+        var count by rememberSaveable { mutableStateOf(0) }
+
+        Text("You've had $count glasses.")
+        Button(onClick = { count++ }, Modifier.padding(top = 8.dp)) {
+            Text("Add one")
+        }
     }
+
 }
