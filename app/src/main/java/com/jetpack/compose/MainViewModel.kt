@@ -1,5 +1,7 @@
 package com.jetpack.compose
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -14,14 +16,15 @@ class MainViewModel(
     private val _currentStateData = MutableLiveData<String>()
     val currentStateData: LiveData<String> = _currentStateData
 
-    private val _countData = MutableLiveData<Int>()
-    val countData: LiveData<Int> = _countData
+    private var _count = mutableStateOf(1)
+    val count: State<Int>
+        get() = _count
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         _currentStateData.value = event.name
     }
 
     fun incrementCount() {
-        _countData.value = (_countData.value ?: 0) + 1
+        _count.value++
     }
 }

@@ -45,11 +45,10 @@ fun WellnessScreen(viewModel: MainViewModel = viewModel(), modifier: Modifier = 
          * var count by rememberSaveable { mutableStateOf(0) }
          */
 
-        val count by viewModel.countData.observeAsState(initial = 0)
         val lifecycleState by viewModel.currentStateData.observeAsState()
 
         Text("Current state $lifecycleState")
-        Text("You've had $count glasses.")
+        Text("You've had ${viewModel.count.value} glasses.")
         Button(onClick = { viewModel.incrementCount() }, Modifier.padding(top = 8.dp)) {
             Text("Add one")
         }
