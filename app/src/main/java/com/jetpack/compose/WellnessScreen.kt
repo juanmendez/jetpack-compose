@@ -21,15 +21,13 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun WellnessScreen(modifier: Modifier = Modifier) {
+fun WellnessScreen(viewModel: MainViewModel = viewModel(), modifier: Modifier = Modifier) {
     Column {
         /**
          * This is a long way
@@ -44,11 +42,15 @@ fun WellnessScreen(modifier: Modifier = Modifier) {
         /**
          * Even if the activity is reset due to configurations such as rotation this
          * composable is retained
+         * var count by rememberSaveable { mutableStateOf(0) }
          */
-        var count by rememberSaveable { mutableStateOf(0) }
 
+        val count by viewModel.countData.observeAsState(initial = 0)
+        val lifecycleState by viewModel.currentStateData.observeAsState()
+
+        Text("Current state $lifecycleState")
         Text("You've had $count glasses.")
-        Button(onClick = { count++ }, Modifier.padding(top = 8.dp)) {
+        Button(onClick = { viewModel.incrementCount() }, Modifier.padding(top = 8.dp)) {
             Text("Add one")
         }
     }
