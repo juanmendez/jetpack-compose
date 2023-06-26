@@ -5,11 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jetpack.compose.ui.theme.BasicsCodelabTheme
 
 
@@ -33,18 +30,12 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyApp() {
-    // rememberSaveable ensures to store data in a save instance state mechanism
-    // when we rotate the device, the value is retained allowing to go to the same expected screen.
-    var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
-
+fun MyApp(viewModel: MainViewModel = viewModel()) {
     BasicsCodelabTheme {
-        if (shouldShowOnboarding) {
-            OnboardingScreen(onContinueClicked = {
-                shouldShowOnboarding = !shouldShowOnboarding
-            })
+        if (viewModel.shouldShowOnboard.value) {
+            onBoardingScreen(onToggleAction = viewModel::onBoardingToggled)
         } else {
-            CardListView()
+            CardListView(viewModel.cardDataItems, viewModel::onCardToggled)
         }
     }
 }
