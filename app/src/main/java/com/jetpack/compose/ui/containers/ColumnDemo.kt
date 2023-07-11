@@ -32,6 +32,9 @@ fun ColumnDemo(
     val magenta = remember { mutableStateOf(true) }
 
     Column() {
+        // box height is 30.dp
+        // row height has weight 1.0f
+        // box height is 30.dp
         Box(
             modifier = modifier
                 .background(Color.Yellow)
@@ -44,6 +47,8 @@ fun ColumnDemo(
                 .weight(1.0f),
             verticalAlignment = Alignment.Bottom
         ) {
+            // Box width's weight is 1.0, height is 0.5 height
+            // Column width is based on wrapped content
             Box(
                 modifier = Modifier
                     .fillMaxHeight(0.5f)

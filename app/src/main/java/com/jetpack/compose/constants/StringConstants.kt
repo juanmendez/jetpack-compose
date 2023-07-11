@@ -1,5 +1,5 @@
 package com.jetpack.compose.constants
 
-object StringUtils {
+object StringConstants {
     val empty = ""
 }

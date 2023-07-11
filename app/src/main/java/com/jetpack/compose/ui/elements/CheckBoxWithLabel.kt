@@ -13,12 +13,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.jetpack.compose.constants.StringUtils
+import com.jetpack.compose.constants.StringConstants
 
 @Composable
 fun CheckBoxWithLabel(
     modifier: Modifier = Modifier,
-    label: String = StringUtils.empty,
+    label: String = StringConstants.empty,
     state: MutableState<Boolean>,
     color: Color = Color.White
 ) {
