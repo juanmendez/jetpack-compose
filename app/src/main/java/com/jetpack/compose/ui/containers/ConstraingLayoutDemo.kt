@@ -1,10 +1,10 @@
 package com.jetpack.compose.ui.containers
 
+import CardCheckBox
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -65,10 +65,14 @@ fun ConstraintLayoutDemo() {
 
         val endGuideline = createGuidelineFromEnd(offset = 20.dp)
 
-        CheckBoxWithLabel(modifier = Modifier.constrainAs(redCheckbox) {
-            top.linkTo(yellowBar.bottom)
-            end.linkTo(endGuideline)
-        }, state = red, label = stringResource(id = R.string.red), color = Color.Red)
+        CardCheckBox(
+            modifier = Modifier.constrainAs(redCheckbox) {
+                top.linkTo(yellowBar.bottom)
+                end.linkTo(endGuideline)
+            }
+        ) {
+            CheckBoxWithLabel(state = red, label = stringResource(id = R.string.red), color = Color.Red)
+        }
 
         CheckBoxWithLabel(
             modifier = Modifier.constrainAs(blueCheckbox) {
