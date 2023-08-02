@@ -20,7 +20,7 @@ fun CardCheckBox(
         elevation = 10.dp,
         modifier = modifier
             .padding(15.dp)
-            .background(Color.Gray),
+            .background(Color.Red),
         backgroundColor = MaterialTheme.colors.surface,
         content = content,
     )

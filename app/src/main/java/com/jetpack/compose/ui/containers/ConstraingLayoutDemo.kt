@@ -127,7 +127,7 @@ fun ConstraintLayoutDemo() {
             blueCheckbox,
             greenCheckbox,
             cyanCheckbox,
-            magentaCheckbox
+            magentaCheckbox,
         )
 
         Box(
@@ -150,7 +150,6 @@ fun ConstraintLayoutDemo() {
 @Preview
 @Composable
 fun ConstraintLayoutDemoPreview() {
-
     ComposeTheme {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
