@@ -10,6 +10,7 @@ Each learning chapter is stored in its own branch.
 - `codelabs-material-theming/*` has all chapters which are part of [Material Theming with Jetpack Compose](https://developer.android.com/codelabs/basic-android-kotlin-compose-material-theming)
 - `codelabs-migration/*` learn how to migrate to Compose incrementally from a layout designed application, [Migrating to Jetpack Compose](https://developer.android.com/codelabs/jetpack-compose-migration) 
 - `codelabs-navigation/*` learn how to migrate to write a navigation composable with the same concepts of the Jetpack Navigation library, [Jetpack Compose Navigation](https://developer.android.com/codelabs/jetpack-compose-navigation) 
+- `codelabs-compose-animation/*` learn how to add a simple animation to your Android app, [Jetpack Compose Animation](https://developer.android.com/codelabs/jetpack-compose-animation)
 
 Good to read
 
