@@ -16,7 +16,25 @@
 
 package com.example.android.codelab.animation.ui.home
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.splineBasedDecay
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -45,6 +63,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Colors
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -68,6 +87,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -158,7 +178,13 @@ fun Home() {
 
     // The background color. The value is changed by the current tab.
     // TODO 1: Animate this color change.
-    val backgroundColor = if (tabPage == TabPage.Home) Purple100 else Green300
+    val backgroundColor by animateColorAsState(
+        if (tabPage == TabPage.Home) {
+            Purple100
+        } else {
+            Green300
+        }, label = ""
+    )
 
     // The coroutine scope for event handlers calling suspend functions.
     val coroutineScope = rememberCoroutineScope()
@@ -257,7 +283,7 @@ fun Home() {
 @Composable
 private fun HomeFloatingActionButton(
     extended: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     // Use `FloatingActionButton` rather than `ExtendedFloatingActionButton` for full control on
     // how it should animate.
@@ -271,7 +297,7 @@ private fun HomeFloatingActionButton(
             )
             // Toggle the visibility of the content with animation.
             // TODO 2-1: Animate this visibility change.
-            if (extended) {
+            AnimatedVisibility(extended) {
                 Text(
                     text = stringResource(R.string.edit),
                     modifier = Modifier
@@ -290,7 +316,17 @@ private fun EditMessage(shown: Boolean) {
     // TODO 2-2: The message should slide down from the top on appearance and slide up on
     //           disappearance.
     AnimatedVisibility(
-        visible = shown
+        visible = shown,
+        enter = slideInVertically(
+            // Enters by sliding down from offset -fullHeight to 0.
+            initialOffsetY = { fullHeight -> -fullHeight },
+            animationSpec = tween(durationMillis = 150, easing = LinearOutSlowInEasing),
+        ),
+        exit = slideOutVertically(
+            // Exits by sliding up from offset 0 to -fullHeight.
+            targetOffsetY = { fullHeight -> -fullHeight },
+            animationSpec = tween(durationMillis = 250, easing = FastOutLinearInEasing),
+        )
     ) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -303,6 +339,7 @@ private fun EditMessage(shown: Boolean) {
             )
         }
     }
+
 }
 
 /**
@@ -310,15 +347,20 @@ private fun EditMessage(shown: Boolean) {
  */
 @Composable
 private fun LazyListState.isScrollingUp(): Boolean {
-    var previousIndex by remember(this) { mutableStateOf(firstVisibleItemIndex) }
-    var previousScrollOffset by remember(this) { mutableStateOf(firstVisibleItemScrollOffset) }
+    var previousIndex by remember(this) { mutableIntStateOf(firstVisibleItemIndex) }
+    var previousScrollOffset by remember(this) { mutableIntStateOf(firstVisibleItemScrollOffset) }
     return remember(this) {
+        /**
+         * Creates a State object whose State.value is the result of calculation.
+         * The result of calculation will be cached in such a way that calling State.value
+         * repeatedly will not cause calculation to be executed multiple times,
+         */
         derivedStateOf {
             if (previousIndex != firstVisibleItemIndex) {
                 previousIndex > firstVisibleItemIndex
             } else {
                 previousScrollOffset >= firstVisibleItemScrollOffset
-            }.also {
+            }.apply {
                 previousIndex = firstVisibleItemIndex
                 previousScrollOffset = firstVisibleItemScrollOffset
             }
@@ -333,7 +375,7 @@ private fun LazyListState.isScrollingUp(): Boolean {
  */
 @Composable
 private fun Header(
-    title: String
+    title: String,
 ) {
     Text(
         text = title,
@@ -364,6 +406,7 @@ private fun TopicRow(topic: String, expanded: Boolean, onClick: () -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
+                .animateContentSize()
         ) {
             Row {
                 Icon(
@@ -409,7 +452,7 @@ fun TopicRowSpacer(visible: Boolean) {
 private fun HomeTabBar(
     backgroundColor: Color,
     tabPage: TabPage,
-    onTabSelected: (tabPage: TabPage) -> Unit
+    onTabSelected: (tabPage: TabPage) -> Unit,
 ) {
     TabRow(
         selectedTabIndex = tabPage.ordinal,
@@ -440,12 +483,50 @@ private fun HomeTabBar(
 @Composable
 private fun HomeTabIndicator(
     tabPositions: List<TabPosition>,
-    tabPage: TabPage
+    tabPage: TabPage,
 ) {
     // TODO 4: Animate these value changes.
-    val indicatorLeft = tabPositions[tabPage.ordinal].left
-    val indicatorRight = tabPositions[tabPage.ordinal].right
-    val color = if (tabPage == TabPage.Home) Purple700 else Green800
+    val transition = updateTransition(
+        tabPage,
+        label = "Tab indicator"
+    )
+    val indicatorLeft by transition.animateDp(
+        transitionSpec = {
+            if (TabPage.Home isTransitioningTo TabPage.Work) {
+                // Indicator moves to the right.
+                // The left edge moves slower than the right edge.
+                spring(stiffness = Spring.StiffnessVeryLow)
+            } else {
+                // Indicator moves to the left.
+                // The left edge moves faster than the right edge.
+                spring(stiffness = Spring.StiffnessMedium)
+            }
+        },
+        label = "Indicator left"
+    ) { page ->
+        tabPositions[page.ordinal].left
+    }
+    val indicatorRight by transition.animateDp(
+        transitionSpec = {
+            if (TabPage.Home isTransitioningTo TabPage.Work) {
+                // Indicator moves to the right
+                // The right edge moves faster than the left edge.
+                spring(stiffness = Spring.StiffnessMedium)
+            } else {
+                // Indicator moves to the left.
+                // The right edge moves slower than the left edge.
+                spring(stiffness = Spring.StiffnessVeryLow)
+            }
+        },
+        label = "Indicator right"
+    ) { page ->
+        tabPositions[page.ordinal].right
+    }
+
+    val color by transition.animateColor(label = "Border color") { page ->
+        if (page == TabPage.Home) Purple700 else Green800
+    }
+
     Box(
         Modifier
             .fillMaxSize()
@@ -474,7 +555,7 @@ private fun HomeTab(
     icon: ImageVector,
     title: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier
@@ -499,7 +580,7 @@ private fun HomeTab(
  */
 @Composable
 private fun WeatherRow(
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -531,7 +612,21 @@ private fun WeatherRow(
 @Composable
 private fun LoadingRow() {
     // TODO 5: Animate this value between 0f and 1f, then back to 0f repeatedly.
-    val alpha = 1f
+    val infiniteTransition = rememberInfiniteTransition(label = "Infinite Label")
+    val alpha by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = keyframes {
+                durationMillis = 1000
+                0.7f at 500
+                0.9f at 800
+            },
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "alpha"
+    )
+
     Row(
         modifier = Modifier
             .heightIn(min = 64.dp)
@@ -592,7 +687,7 @@ private fun TaskRow(task: String, onRemove: () -> Unit) {
  * @param onDismissed Called when the element is swiped to the edge of the screen.
  */
 private fun Modifier.swipeToDismiss(
-    onDismissed: () -> Unit
+    onDismissed: () -> Unit,
 ): Modifier = composed {
     // TODO 6-1: Create an Animatable instance for the offset of the swiped element.
     pointerInput(Unit) {

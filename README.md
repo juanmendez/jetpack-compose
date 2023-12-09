@@ -16,6 +16,44 @@ Good to read
 
 - [Thinking in Compose](https://developer.android.com/jetpack/compose/mental-model)
 
-There was a time in 2021 I worked solely in [Flutter](https://flutter.dev/). Their reactive pattern is very similar to what's being used in [Jetpack Compose](https://developer.android.com/jetpack/compose). Where in Flutter there are stateless and stateful widgets, here composables dictate themselves to be stateful or not. But overall it is the same flowable pattern propagating changes in ui elements where there is necessity and skipping others which don't need it.
 
-One thing is for sure this reactive pattern is used also in [React Native](https://reactnative.dev/), and other frameworks such as [Swift UI](https://developer.apple.com/xcode/swiftui/).
+### Color animation
+
+We are learning how to animate. What used to be a simple swap of color for the background, now has a color animation. By the way, this tutorial uses TODOs which makes it easier to find each step just by looking at the TODO console.
+
+```
+// before
+    val backgroundColor = if (tabPage == TabPage.Home) Purple100 else Green300
+
+// after, I like to set conditions in blocks
+    val backgroundColor by animateColorAsState(
+        if (tabPage == TabPage.Home) {
+            Purple100
+        } else {
+            Green300
+        }, label = ""
+    )
+```
+
+Here we are going to ensure a button is expanded with animation and also the text displayed.
+
+```
+            if (extended) {
+                Text(
+                    text = stringResource(R.string.edit),
+                    modifier = Modifier
+                        .padding(start = 8.dp, top = 3.dp)
+                )
+            }
+```
+
+Now with animation
+
+```
+AnimatedVisibility(extended) {
+    Text(
+        text = stringResource(R.string.edit),
+        modifier = Modifier
+            .padding(start = 8.dp, top = 3.dp)
+    )
+}
