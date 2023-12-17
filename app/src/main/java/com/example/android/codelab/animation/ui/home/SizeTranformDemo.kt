@@ -31,7 +31,7 @@ fun SizeTransformDemo(
 ) {
 
     var expanded by remember { mutableStateOf(false) }
-    Box( Modifier.fillMaxSize()) {
+    Box(Modifier.fillMaxSize()) {
         Surface(
             color = MaterialTheme.colors.primary,
             onClick = { expanded = !expanded }

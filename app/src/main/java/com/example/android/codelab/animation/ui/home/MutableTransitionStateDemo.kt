@@ -7,21 +7,17 @@ import androidx.compose.animation.EnterExitState
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
-import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
@@ -58,9 +54,11 @@ fun MutableTransitionStateDemo(
             val background by transition.animateColor(label = "label makes preview work") { state ->
                 if (state == EnterExitState.Visible) Color.Blue else Color.Gray
             }
-            Box(modifier = Modifier
-                .size(128.dp)
-                .background(background))
+            Box(
+                modifier = Modifier
+                    .size(128.dp)
+                    .background(background)
+            )
         }
 
         Button(onClick = {
@@ -81,7 +79,7 @@ fun MutableTransitionStateDemo(
 
             Spacer(modifier = Modifier.width(20.dp))
 
-            Text(text = "Count: " )
+            Text(text = "Count: ")
 
             AnimatedContent(
                 targetState = count,
